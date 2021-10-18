@@ -1,9 +1,10 @@
 #include <iostream>
+#include <fstream>
 #include <cstdlib>
 #include <pthread.h>
 #include <unordered_set>
 #include <mutex>
-
+#include <sstream>
 using namespace std;
 
 #define NUM_THREADS 3
@@ -13,6 +14,9 @@ mutex mtx;
 
 // Indicates whether solution presented is found to be valid or not
 bool validation [NUM_THREADS];
+
+// Variable containing sudoku solution to test in format [row][col]
+int solution [9][9];
 
 // Contains indices for a given sudoku square
 typedef struct {
@@ -50,11 +54,42 @@ void *validate(void *param) {
 }
 
 
-int main() {
+int main(int argc, char **argv) {
     
-    //Read sudoku.txt from parameters
-    //transpose the data into a 2-D array
-    //make the array have global scope here
+    // Open solution file
+    char* filepath = argv[1];
+    ifstream solutionFile( filepath );
+    if(!solutionFile.is_open()) {
+        cout << "Error: file could not be opened";
+        exit(0);
+    } else {
+        cout << "Successfully opened file: " << filepath << endl;
+    }
+
+    // Read solution file into solution array
+    string line;
+    int i = 0;
+    while(getline(solutionFile, line) && i < 9) {
+        stringstream ss( line );
+        int num;
+        int j = 0;
+        while(ss >> num && j < 9) {
+            solution[i][j] = num;
+            j++;
+        }
+        i++;
+    }
+
+    solutionFile.close();
+
+    //print solution array obtained
+    cout << "Obtained solution array: " << endl;
+    for(int i = 0; i < 9; i++) {
+        for(int j = 0; j < 9; j++) {
+            cout << solution[i][j] << " ";
+        }
+        cout << endl;
+    }
     
     //make threads
     pthread_t threads[NUM_THREADS];
