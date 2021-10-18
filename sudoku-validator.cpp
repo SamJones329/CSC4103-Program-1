@@ -2,18 +2,17 @@
 #include <cstdlib>
 #include <pthread.h>
 #include <unordered_set>
-#include <atomic>
+#include <mutex>
 
 using namespace std;
 
 #define NUM_THREADS 3
 
-
-// Indicates when threads are finished
-bool done [NUM_THREADS];
+// mutex lock
+mutex mtx;
 
 // Indicates whether solution presented is found to be valid or not
-bool validation  = true;
+bool validation [NUM_THREADS];
 
 // Contains indices for a given sudoku square
 typedef struct {
@@ -41,11 +40,11 @@ void *validate(void *param) {
             //if so, invalid set valid = 0 and break
     }
 
-    //crit
-    //if validation is already set to false, keep false, otherwise keep true
-    validation = valid & validation;
-    done[id] = true;
-    //end crit
+    validation[id] = valid;
+
+    mtx.lock();
+    //print stuff
+    mtx.unlock();
 
     pthread_exit(NULL);
 }
@@ -61,7 +60,7 @@ int main() {
     pthread_t threads[NUM_THREADS];
     int rc;
     for(int i = 0; i < NUM_THREADS; i++ ) {
-        done[i] = false;
+        validation[i] = false;
         cout << "main() : creating thread, " << i << endl;
         rc = pthread_create(&threads[i], NULL, validate, (void *)i);
         
@@ -77,7 +76,10 @@ int main() {
     }
 
     //if any threads say invalid, its invalid, so print invalid
-    if(validation);
+    bool valid = true;
+    for(int i = 0; i < NUM_THREADS; i++) {
+        if(!validation[i]) valid = false;
+    }
 
     return 0;
 }
