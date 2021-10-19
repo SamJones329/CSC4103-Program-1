@@ -1,3 +1,17 @@
+/**
+ * Name: Jones, Samuel
+ * Email: sjon228@lsu.edu
+ * Project: PA-1 (Multithreading)
+ * Instructor: Feng Chen
+ * Class: cs4103-sp21
+ * Login ID: cs410348
+ * 
+ * Sudoku validator checks whether proposed sudoku 
+ * solutions are valid or not. The solution should 
+ * be written in a text file whose location will be
+ * passed as a command line argument upon execution.
+ */
+
 #include <iostream>
 #include <fstream>
 #include <cstdlib>
