@@ -104,8 +104,6 @@ int main(int argc, char **argv) {
     if(!solutionFile.is_open()) {
         cout << "Error: file could not be opened";
         exit(0);
-    } else {
-        cout << "Successfully opened file: " << filepath << endl;
     }
 
     // Read solution file into solution array
@@ -123,15 +121,6 @@ int main(int argc, char **argv) {
     }
 
     solutionFile.close();
-
-    //print solution array obtained
-    cout << "Obtained solution array: " << endl;
-    for(int i = 0; i < 9; i++) {
-        for(int j = 0; j < 9; j++) {
-            cout << solution[i][j] << " ";
-        }
-        cout << endl;
-    }
 
     // Make array of parameters to be used for threads
     parameter paramArr [NUM_THREADS];
@@ -157,7 +146,6 @@ int main(int argc, char **argv) {
     int rc;
     for(int i = 0; i < NUM_THREADS; i++ ) {
         validation[i] = false;
-        cout << "main() : creating thread, " << i+1 << endl;
         rc = pthread_create(&threads[i], NULL, validate, (void *) &paramArr[i]);
         
         if (rc) {
