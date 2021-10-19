@@ -16,4 +16,6 @@
  X X X X X X X X X<br>
  Where each X is a number.
 
- The program will output each time a thread checks a row, column, or subgrid and indicate its validity. The program will also output a final message indicating whether the solution is valid or not.
+ The program will output each time a thread checks a row, column, or subgrid and indicate its validity. The program will also output a final message indicating whether  the solution is valid or not.
+
+ There is a sample solution text file provided in the repository.
